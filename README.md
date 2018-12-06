@@ -1,7 +1,6 @@
 <div style="text-align:center">
-    <img src="icon.png" width="128">
+    <img src="https://raw.githubusercontent.com/YoRolling/exclude-it/dev/icon.png" width="128">
 </div>
-
 
 ## Features
 
