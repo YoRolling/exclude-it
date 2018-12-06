@@ -3,6 +3,7 @@
     "displayName": "Exclude It",
     "description": "exclude files or folders with right click ",
     "version": "1.0.0",
+    "publisher": "YoRolling",
     "engines": {
         "vscode": "^1.29.0"
     },
@@ -13,6 +14,16 @@
         "*"
     ],
     "main": "./out/extension",
+    "author": {
+        "name": "YoRolling",
+        "email": "walldr2161ly@163.com",
+        "url": "https://github.com/YoRolling/"
+    },
+    "icon": "icon.png",
+    "repository": {
+        "type": "github",
+        "url": "https://github.com/YoRolling/exclude-it/"
+    },
     "contributes": {
         "commands": [
             {
