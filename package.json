@@ -2,7 +2,7 @@
     "name": "exclude-it",
     "displayName": "Exclude It",
     "description": "exclude files or folders with right click ",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "engines": {
         "vscode": "^1.29.0"
     },
@@ -17,11 +17,11 @@
         "commands": [
             {
                 "command": "extension.excludeWs",
-                "title": "exclude it as workspace"
+                "title": "Exclude: workspace"
             },
             {
                 "command": "extension.excludeglobal",
-                "title": "exclude it as global"
+                "title": "Exclude: global"
             }
         ],
         "menus": {
