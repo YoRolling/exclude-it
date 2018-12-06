@@ -13,6 +13,12 @@
         "*"
     ],
     "main": "./out/extension",
+    "author": {
+        "name": "YoRolling",
+        "email": "walldr2161ly@163.com",
+        "url": "https://github.com/YoRolling/exclude-it/"
+    },
+    "icon": "https://github.com/YoRolling/exclude-it/blob/dev/icon.png",
     "contributes": {
         "commands": [
             {
