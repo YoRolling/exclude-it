@@ -91,11 +91,12 @@ function flushConf(key: string, values: string[], global: boolean) {
  */
 async function globMatch(uri: vscode.Uri, isGlobal = true) {
     try {
+        const realPath = uri.fsPath;
         const fileMeta = <utils.Meta>(
-            await utils.parseFilePath(uri.path, rootPath)
+            await utils.parseFilePath(realPath, rootPath)
         );
-        const isFile = await utils.isFile(uri.path);
-        const isFolder = await utils.isFolder(uri.path);
+        const isFile = await utils.isFile(realPath);
+        const isFolder = await utils.isFolder(realPath);
         let result: string[] | undefined;
         let glob: string[] = [];
         if (isFile) {

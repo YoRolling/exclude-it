@@ -2,7 +2,7 @@
     "name": "exclude-it",
     "displayName": "Exclude It",
     "description": "exclude files or folders with right click ",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "publisher": "YoRolling",
     "engines": {
         "vscode": "^1.29.0"

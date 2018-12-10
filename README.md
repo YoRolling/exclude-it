@@ -20,6 +20,9 @@ For now， we do not need any settings， maybe later ？
 
 ## Known Issues
 
+* does not work with BlockDevice 、CharacterDevice、FIFO、Socket、SymbolicLink
+
+
 ## Release Notes
 
 Users appreciate release notes as you update your extension.
@@ -27,6 +30,10 @@ Users appreciate release notes as you update your extension.
 ### 1.0.0
 
 Initial release of  Extension
+
+### 1.1.0
+
+fix bugs on Windows, see [issue](https://github.com/YoRolling/exclude-it/issues/3)
 
 ## Issues
 
