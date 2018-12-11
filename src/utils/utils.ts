@@ -102,6 +102,11 @@ export async function parseFilePath(filePath: string,rootPath = ''): Promise<Met
     if (isUnavail(filePath)) {
         return Promise.reject(new Error(`${filePath} should have a fasly value`));
     }
+    console.log({
+        filePath,
+        rootPath
+    });
+    
     try {
         await exist(filePath);
         const extname = path.extname(filePath);

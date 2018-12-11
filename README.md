@@ -35,6 +35,10 @@ Initial release of  Extension
 
 fix bugs on Windows, see [issue](https://github.com/YoRolling/exclude-it/issues/3)
 
+### 1.2.0
+
+support multiRoot workspace 
+
 ## Issues
 
 Submit the [issues](https://github.com/YoRolling/exclude-it/issues) if you find any bug or have any suggestion.
