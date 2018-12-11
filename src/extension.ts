@@ -4,6 +4,7 @@
 import * as vscode from "vscode";
 import * as utils from "./utils/utils";
 import { isNullOrUndefined } from "util";
+import { dirname } from "path";
 const rootPath = vscode.workspace.rootPath;
 
 // this method is called when your extension is activated
@@ -188,7 +189,7 @@ function getRoot(uri: vscode.Uri): string {
     if (isMultiRoot() && vscode.workspace.workspaceFolders) {
         let matchRoot: string[] = vscode.workspace.workspaceFolders
             .filter((wf: vscode.WorkspaceFolder) => {
-                return uri.fsPath.indexOf(wf.uri.fsPath) !== -1;
+                return isParentPath(uri.fsPath, wf.uri.fsPath);
             })
             .map(v => v.uri.fsPath);
         return matchRoot[0];
@@ -206,4 +207,40 @@ function getRoot(uri: vscode.Uri): string {
 function getExtenstionConfig(): vscode.WorkspaceConfiguration {
     const config = vscode.workspace.getConfiguration("excludeIt");
     return config;
+}
+
+/**
+ * get dirname for p
+ * @author YoRolling
+ * @version 1.2.0
+ * @param {string} p
+ * @returns {string}
+ */
+function getParentDir(p: string): string {
+    return dirname(p);
+}
+/**
+ *  
+ * @author YoRolling
+ * @version 1.2.0
+ * @param {string} source
+ * @param {string} target
+ * @returns {boolean}
+ */
+function isParentPath(source: string, target: string): boolean {
+    if(source === "" || source === "." || source === '/') {
+		return false;
+	}
+    if( source === target) {
+        return true;
+    }
+    const parent = getParentDir(source);
+    if(parent === source) {
+        return false;
+    }
+    if(parent === target) {
+        return true;
+    } else {
+        return isParentPath(parent, target);
+    }
 }
