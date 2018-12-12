@@ -4,8 +4,9 @@
 import * as vscode from "vscode";
 import * as utils from "./utils/utils";
 import { isNullOrUndefined } from "util";
+import { dirname } from "path";
 const rootPath = vscode.workspace.rootPath;
-
+const subdir = require('subdir');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -56,7 +57,15 @@ export function deactivate() {}
  * @param {*} values
  * @returns
  */
-function flushConf(key: string, values: string[], global: boolean) {
+function flushConf(
+    key: string,
+    values: string[],
+    global: boolean,
+    uri: vscode.Uri
+) {
+    if(values && values.length === 0 ) {
+        return false;
+    }
     if (isNullOrUndefined(key)) {
         vscode.window.showErrorMessage(`E1000001: Internal error`);
         return;
@@ -65,33 +74,55 @@ function flushConf(key: string, values: string[], global: boolean) {
         vscode.window.showErrorMessage(`E1000002: Internal error`);
         return;
     }
-    const config = vscode.workspace.getConfiguration("files");
+    const config = vscode.workspace.getConfiguration("files", uri);
     let clude: any = config.get("exclude");
     if (!clude) {
         clude = {};
     }
     try {
-        Array.from(new Set(values)).filter((v) => v !== '*' ).forEach((glob: string) => {
-            clude[glob] = true;
-        });
+        Array.from(new Set(values))
+            .filter(v => v !== "*")
+            .forEach((glob: string) => {
+                clude[glob] = true;
+            });
+        
+        let target: vscode.ConfigurationTarget = global
+            ? vscode.ConfigurationTarget.Global
+            : vscode.ConfigurationTarget.Workspace;
 
-        config.update("exclude", clude, global).then(() => {
+        if(!global && isMultiRoot()){
+            const config = getExtenstionConfig();
+            let isFlushFolder = config.get('folder');
+            target = isFlushFolder ? vscode.ConfigurationTarget.WorkspaceFolder : vscode.ConfigurationTarget.Workspace;
+        }
+       
+        config.update("exclude", clude, target).then(() => {
             vscode.window.showInformationMessage("♡ You got it!");
         });
-    } catch (error) {
-
-    }
+    } catch (error) {}
 }
-
 /**
  *
- * 
+ * @author YoRolling
+ * @version 1.2.0
+ * @returns {boolean}
+ */
+function isMultiRoot(): boolean {
+    if (vscode.workspace.workspaceFolders) {
+        return vscode.workspace.workspaceFolders.length > 1;
+    }
+    return false;
+}
+/**
+ *
+ *
  * @param {vscode.Uri} uri
  * @param {boolean} [isGlobal=true]
  */
 async function globMatch(uri: vscode.Uri, isGlobal = true) {
     try {
         const realPath = uri.fsPath;
+        const rootPath = getRoot(uri) || '';
         const fileMeta = <utils.Meta>(
             await utils.parseFilePath(realPath, rootPath)
         );
@@ -107,7 +138,7 @@ async function globMatch(uri: vscode.Uri, isGlobal = true) {
                     case "path":
                         break;
                     case "extname":
-                        r = fileMeta[key] ?  `**/*${fileMeta[key]}` : undefined ;
+                        r = fileMeta[key] ? `**/*${fileMeta[key]}` : undefined;
                         break;
                     case "basename":
                         r = fileMeta[key];
@@ -122,24 +153,20 @@ async function globMatch(uri: vscode.Uri, isGlobal = true) {
                     glob.push(r);
                 }
             });
-            if(fileMeta["dirname"]) {
-                if(fileMeta["extname"]) {
-                    glob.push(
-                        `${ fileMeta["dirname"]}/*${fileMeta["extname"]}`
-                    );
+            if (fileMeta["dirname"]) {
+                if (fileMeta["extname"]) {
+                    glob.push(`${fileMeta["dirname"]}/*${fileMeta["extname"]}`);
                 }
             } else {
-                if(fileMeta["extname"]) {
-                    glob.push(
-                        `*${fileMeta["extname"]}`
-                    );
+                if (fileMeta["extname"]) {
+                    glob.push(`*${fileMeta["extname"]}`);
                 }
             }
-            
+
             if (fileMeta["basename"]) {
                 glob.push(`**/${fileMeta["basename"]}`);
-                if ( fileMeta['dirname'] ) {
-                    glob.push(`${fileMeta['dirname']}/${fileMeta["basename"]}`);
+                if (fileMeta["dirname"]) {
+                    glob.push(`${fileMeta["dirname"]}/${fileMeta["basename"]}`);
                 }
             }
             result = await shouldShowPicker(glob);
@@ -147,9 +174,52 @@ async function globMatch(uri: vscode.Uri, isGlobal = true) {
             result = [`${fileMeta.basename}`];
         }
         if (result) {
-            flushConf("files.exclude", result, isGlobal);
+            flushConf("files.exclude", result, isGlobal, uri);
         }
     } catch (error) {
         vscode.window.showErrorMessage(error.message || error);
     }
+}
+
+/**
+ * get real root path for multiRoot
+ * @author YoRolling
+ * @version 1.2.0
+ * @param {vscode.Uri} uri file uri
+ * @returns {string}
+ */
+function getRoot(uri: vscode.Uri): string {
+    if (isMultiRoot() && vscode.workspace.workspaceFolders) {
+        let matchRoot: string[] = vscode.workspace.workspaceFolders
+            .filter((wf: vscode.WorkspaceFolder) => {
+                return isParentPath(uri.fsPath, wf.uri.fsPath);
+            })
+            .map(v => v.uri.fsPath);
+        return matchRoot[0];
+    } else {
+        return rootPath || "";
+    }
+}
+
+/**
+ * get extension configurations
+ * @author YoRolling
+ * @version 1.2.0
+ * @returns {vscode.WorkspaceConfiguration}
+ */
+function getExtenstionConfig(): vscode.WorkspaceConfiguration {
+    const config = vscode.workspace.getConfiguration("excludeIt");
+    return config;
+}
+
+/**
+ *  
+ * @author YoRolling
+ * @version 1.2.0
+ * @param {string} source
+ * @param {string} target
+ * @returns {boolean}
+ */
+function isParentPath(source: string, target: string): boolean {
+    return subdir(target, source);
 }

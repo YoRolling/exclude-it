@@ -15,3 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * fixed bugs on Windows 
+
+## [1.2.0] - 2018-12-12
+
+### Added
+
+* support multiRoot workspace
+* add configuration for multiRoot workspace
+
+### Fixed 
+
+* does not save configuration when empty glob
