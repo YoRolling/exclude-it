@@ -37,7 +37,8 @@ fix bugs on Windows, see [issue](https://github.com/YoRolling/exclude-it/issues/
 
 ### 1.2.0
 
-support multiRoot workspace 
+* support multiRoot workspace 
+* does not save configuration when empty glob
 
 ## Issues
 

@@ -6,7 +6,7 @@ import * as utils from "./utils/utils";
 import { isNullOrUndefined } from "util";
 import { dirname } from "path";
 const rootPath = vscode.workspace.rootPath;
-
+const subdir = require('subdir');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -63,6 +63,9 @@ function flushConf(
     global: boolean,
     uri: vscode.Uri
 ) {
+    if(values && values.length === 0 ) {
+        return false;
+    }
     if (isNullOrUndefined(key)) {
         vscode.window.showErrorMessage(`E1000001: Internal error`);
         return;
@@ -210,16 +213,6 @@ function getExtenstionConfig(): vscode.WorkspaceConfiguration {
 }
 
 /**
- * get dirname for p
- * @author YoRolling
- * @version 1.2.0
- * @param {string} p
- * @returns {string}
- */
-function getParentDir(p: string): string {
-    return dirname(p);
-}
-/**
  *  
  * @author YoRolling
  * @version 1.2.0
@@ -228,19 +221,5 @@ function getParentDir(p: string): string {
  * @returns {boolean}
  */
 function isParentPath(source: string, target: string): boolean {
-    if(source === "" || source === "." || source === '/') {
-		return false;
-	}
-    if( source === target) {
-        return true;
-    }
-    const parent = getParentDir(source);
-    if(parent === source) {
-        return false;
-    }
-    if(parent === target) {
-        return true;
-    } else {
-        return isParentPath(parent, target);
-    }
+    return subdir(target, source);
 }
