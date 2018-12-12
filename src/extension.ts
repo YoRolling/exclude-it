@@ -4,7 +4,6 @@
 import * as vscode from "vscode";
 import * as utils from "./utils/utils";
 import { isNullOrUndefined } from "util";
-import { dirname } from "path";
 const rootPath = vscode.workspace.rootPath;
 const subdir = require('subdir');
 // this method is called when your extension is activated
@@ -95,7 +94,6 @@ function flushConf(
             let isFlushFolder = config.get('folder');
             target = isFlushFolder ? vscode.ConfigurationTarget.WorkspaceFolder : vscode.ConfigurationTarget.Workspace;
         }
-       
         config.update("exclude", clude, target).then(() => {
             vscode.window.showInformationMessage("♡ You got it!");
         });
