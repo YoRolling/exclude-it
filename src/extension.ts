@@ -74,6 +74,7 @@ function flushConf(
         return;
     }
     const config = vscode.workspace.getConfiguration("files", uri);
+    console.log('config', JSON.stringify(config));
     let clude: any = config.get("exclude");
     if (!clude) {
         clude = {};
@@ -90,7 +91,7 @@ function flushConf(
             : vscode.ConfigurationTarget.Workspace;
 
         if(!global && isMultiRoot()){
-            const config = getExtenstionConfig();
+            const config = getExtenstionConfig(uri);
             let isFlushFolder = config.get('folder');
             target = isFlushFolder ? vscode.ConfigurationTarget.WorkspaceFolder : vscode.ConfigurationTarget.Workspace;
         }
@@ -205,8 +206,9 @@ function getRoot(uri: vscode.Uri): string {
  * @version 1.2.0
  * @returns {vscode.WorkspaceConfiguration}
  */
-function getExtenstionConfig(): vscode.WorkspaceConfiguration {
-    const config = vscode.workspace.getConfiguration("excludeIt");
+function getExtenstionConfig(uri: vscode.Uri): vscode.WorkspaceConfiguration {
+    const config = vscode.workspace.getConfiguration("excludeIt", uri);
+    console.log('config', JSON.stringify(config));
     return config;
 }
 
