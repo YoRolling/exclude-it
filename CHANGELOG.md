@@ -26,3 +26,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed 
 
 * does not save configuration when empty glob
+
+## [1.2.1] - 2019-03-11
+
+### Fixed
+
+* Rename Context Menu 

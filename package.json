@@ -2,7 +2,7 @@
     "name": "exclude-it",
     "displayName": "Exclude It",
     "description": "exclude files or folders with right click ",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "publisher": "YoRolling",
     "engines": {
         "vscode": "^1.29.0"
@@ -28,11 +28,11 @@
         "commands": [
             {
                 "command": "extension.excludeWs",
-                "title": "Exclude: workspace"
+                "title": "Exclude: Folder"
             },
             {
                 "command": "extension.excludeglobal",
-                "title": "Exclude: global"
+                "title": "Exclude: User"
             }
         ],
         "menus": {

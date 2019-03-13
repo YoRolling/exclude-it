@@ -40,6 +40,10 @@ fix bugs on Windows, see [issue](https://github.com/YoRolling/exclude-it/issues/
 * support multiRoot workspace 
 * does not save configuration when empty glob
 
+### 1.2.1
+
+* rename context menu 
+
 ## Issues
 
 Submit the [issues](https://github.com/YoRolling/exclude-it/issues) if you find any bug or have any suggestion.
