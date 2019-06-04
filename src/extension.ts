@@ -74,9 +74,13 @@ function flushConf(
         return;
     }
     const config = vscode.workspace.getConfiguration("files", uri);
-    console.log('config', JSON.stringify(config));
-    let clude: any = config.get("exclude");
-    if (!clude) {
+    const defaultValue = config.inspect("exclude");
+
+    let clude: any; 
+    if (defaultValue !== undefined ) {
+        clude = global === true ?  defaultValue.globalValue  : defaultValue.workspaceFolderValue;
+    }
+    if (clude === undefined) {
         clude = {};
     }
     try {

@@ -32,3 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Rename Context Menu 
+
+## [1.2.2] - 2019-06-04
+
+### Changed
+
+* Save exclude glob without globalSettings or defaultSettings. Change Configuration API from `get` to  `inspect`
