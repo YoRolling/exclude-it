@@ -7,7 +7,7 @@
 - [x]  support files or folder 
 - [x]  we got context menu to do this
 - [x]  smart glob
-
+- [x]  multiple selection support
 
 
 ## Requirements
@@ -43,6 +43,10 @@ fix bugs on Windows, see [issue](https://github.com/YoRolling/exclude-it/issues/
 ### 1.2.1
 
 * rename context menu 
+
+### 1.2.3
+
+* multiple selection support 
 
 ## Issues
 

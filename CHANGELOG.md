@@ -38,3 +38,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Save exclude glob without globalSettings or defaultSettings. Change Configuration API from `get` to  `inspect`
+
+## [1.2.3] - 2020-12-08
+
+### Added
+
+* multiple selection support

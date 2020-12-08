@@ -14,10 +14,15 @@ export function activate(context: vscode.ExtensionContext) {
     // The commandId parameter must match the command field in package.json
     let disposable = vscode.commands.registerCommand(
         "extension.excludeWs",
-        (uri: vscode.Uri) => {
-            globMatch(uri, false);
+        (uri: vscode.Uri, uris: vscode.Uri[]) => {
+            if (uris.length === 0) {
+                // no selection
+                return 
+            }
+            queueExclude(uris, false);
         }
     );
+
     // excludeglobal
     context.subscriptions.push(disposable);
     context.subscriptions.push(registerGlobal(context));
@@ -26,8 +31,8 @@ export function activate(context: vscode.ExtensionContext) {
 function registerGlobal(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand(
         "extension.excludeglobal",
-        (uri: vscode.Uri) => {
-            globMatch(uri, true);
+        (uri: vscode.Uri, uris: vscode.Uri[]) => {
+            queueExclude(uris, true);
         }
     );
     return disposable;
@@ -61,17 +66,17 @@ function flushConf(
     values: string[],
     global: boolean,
     uri: vscode.Uri
-) {
+): Thenable<void> {
     if(values && values.length === 0 ) {
-        return false;
+        return Promise.resolve();
     }
     if (isNullOrUndefined(key)) {
         vscode.window.showErrorMessage(`E1000001: Internal error`);
-        return;
+        return Promise.reject();
     }
     if (isNullOrUndefined(values)) {
         vscode.window.showErrorMessage(`E1000002: Internal error`);
-        return;
+        return Promise.reject();
     }
     const config = vscode.workspace.getConfiguration("files", uri);
     const defaultValue = config.inspect("exclude");
@@ -99,10 +104,12 @@ function flushConf(
             let isFlushFolder = config.get('folder');
             target = isFlushFolder ? vscode.ConfigurationTarget.WorkspaceFolder : vscode.ConfigurationTarget.Workspace;
         }
-        config.update("exclude", clude, target).then(() => {
+        return config.update("exclude", clude, target).then(() => {
             vscode.window.showInformationMessage("♡ You got it!");
         });
-    } catch (error) {}
+    } catch (error) {
+        return Promise.reject(error)
+    }
 }
 /**
  *
@@ -177,10 +184,11 @@ async function globMatch(uri: vscode.Uri, isGlobal = true) {
             result = [`${fileMeta.basename}`];
         }
         if (result) {
-            flushConf("files.exclude", result, isGlobal, uri);
+            return flushConf("files.exclude", result, isGlobal, uri);
         }
+        return Promise.resolve()
     } catch (error) {
-        vscode.window.showErrorMessage(error.message || error);
+        return vscode.window.showErrorMessage(error.message || error);
     }
 }
 
@@ -212,7 +220,6 @@ function getRoot(uri: vscode.Uri): string {
  */
 function getExtenstionConfig(uri: vscode.Uri): vscode.WorkspaceConfiguration {
     const config = vscode.workspace.getConfiguration("excludeIt", uri);
-    console.log('config', JSON.stringify(config));
     return config;
 }
 
@@ -226,4 +233,30 @@ function getExtenstionConfig(uri: vscode.Uri): vscode.WorkspaceConfiguration {
  */
 function isParentPath(source: string, target: string): boolean {
     return subdir(target, source);
+}
+
+/**
+ * @description 递归处理要忽略的文件
+ * @author YoRolling
+ * @date 08/12/2020
+ * @param {vscode.Uri[]} uris
+ * @param {boolean} [isGlobal=true]
+ * @return {*} 
+ */
+async function queueExclude(uris: vscode.Uri[], isGlobal = true){
+    if (uris.length > 0) {
+        try {
+            let uri = uris.shift()
+            if (uri !== undefined) {
+                await globMatch(uri,isGlobal)
+            } else {
+                return false
+            }
+        } catch (error) {
+            
+        }
+        queueExclude(uris, isGlobal)
+    } else {
+        return false
+    }
 }
