@@ -1,77 +1,99 @@
 {
-    "name": "exclude-it",
-    "displayName": "Exclude It",
-    "description": "exclude files or folders with right click ",
-    "version": "1.2.3",
-    "publisher": "YoRolling",
-    "engines": {
-        "vscode": "^1.29.0"
-    },
-    "categories": [
-        "Other"
+  "name": "exclude-it",
+  "displayName": "Exclude It",
+  "description": "exclude files or folders with right click ",
+  "version": "1.2.3",
+  "publisher": "YoRolling",
+  "engines": {
+    "vscode": "^1.29.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/extension",
+  "author": {
+    "name": "YoRolling",
+    "email": "walldr2161ly@163.com",
+    "url": "https://github.com/YoRolling/"
+  },
+  "icon": "icon.png",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/YoRolling/exclude-it/"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.excludeWs",
+        "title": "Exclude: Folder"
+      },
+      {
+        "command": "extension.excludeglobal",
+        "title": "Exclude: User"
+      }
     ],
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/extension",
-    "author": {
-        "name": "YoRolling",
-        "email": "walldr2161ly@163.com",
-        "url": "https://github.com/YoRolling/"
-    },
-    "icon": "icon.png",
-    "repository": {
-        "type": "github",
-        "url": "https://github.com/YoRolling/exclude-it/"
-    },
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.excludeWs",
-                "title": "Exclude: Folder"
-            },
-            {
-                "command": "extension.excludeglobal",
-                "title": "Exclude: User"
-            }
-        ],
-        "menus": {
-            "explorer/context": [
-                {
-                    "command": "extension.excludeWs"
-                },
-                {
-                    "command": "extension.excludeglobal"
-                }
-            ]
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.excludeWs"
         },
-        "configuration": {
-            "type": "object",
-            "properties": {
-                "excludeIt.folder": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "save configuration to foler or workspace， true for folder， false for workspace"
-                }
-            },
-            "title": "Exclude It configuration"
+        {
+          "command": "extension.excludeglobal"
         }
+      ]
     },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^2.6.1",
-        "vscode": "^1.1.21",
-        "tslint": "^5.8.0",
-        "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
-    },
-    "dependencies": {
-        "subdir": "0.0.3"
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "excludeIt.folder": {
+          "type": "boolean",
+          "default": true,
+          "description": "save configuration to foler or workspace， true for folder， false for workspace"
+        }
+      },
+      "title": "Exclude It configuration"
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.10.25",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
+    "eslint": "^7.15.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.2",
+    "prettier": "^2.2.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.1.2",
+    "vscode": "^1.1.21"
+  },
+  "dependencies": {
+    "subdir": "0.0.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts}": [
+      "eslint --fix  -c .eslintrc.js"
+    ]
+  }
 }
