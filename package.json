@@ -2,7 +2,7 @@
   "name": "exclude-it",
   "displayName": "Exclude It",
   "description": "exclude files or folders with right click ",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "publisher": "YoRolling",
   "engines": {
     "vscode": "^1.29.0"
@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
-    "@types/node": "^8.10.25",
+    "@types/node": "^12.19.9",
     "@typescript-eslint/eslint-plugin": "^4.9.1",
     "@typescript-eslint/parser": "^4.9.1",
     "eslint": "^7.15.0",
