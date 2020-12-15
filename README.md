@@ -52,6 +52,10 @@ fix bugs on Windows, see [issue](https://github.com/YoRolling/exclude-it/issues/
 
 * Change ActivationEvents
 
+### 1.2.5
+
+* fix logical error
+
 ## Issues
 
 Submit the [issues](https://github.com/YoRolling/exclude-it/issues) if you find any bug or have any suggestion.

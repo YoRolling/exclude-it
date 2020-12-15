@@ -50,3 +50,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Changed ActivationEvents
+
+## [1.2.5] - 2020-12-15
+
+### Fixed
+
+* logical error 
