@@ -23,7 +23,7 @@ export function exist(_path: string): Promise<boolean | Error> {
   }
   return new Promise((resolve, reject) => {
     access(_path, undefined, (error: Error | null) => {
-      if (isNullOrUndefined(error)) {
+      if (!isNullOrUndefined(error)) {
         reject(error)
       } else {
         resolve(true)
@@ -57,7 +57,7 @@ export async function lsStat(_path: string): Promise<Stats | Error> {
     await exist(_path)
     return new Promise<Stats | Error>((resolve, reject) => {
       lstat(_path, (error: Error | null, stats: Stats) => {
-        if (isNullOrUndefined(error)) {
+        if (!isNullOrUndefined(error)) {
           reject(error)
         } else {
           resolve(stats)
