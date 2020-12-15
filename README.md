@@ -48,6 +48,10 @@ fix bugs on Windows, see [issue](https://github.com/YoRolling/exclude-it/issues/
 
 * multiple selection support 
 
+### 1.2.4
+
+* Change ActivationEvents
+
 ## Issues
 
 Submit the [issues](https://github.com/YoRolling/exclude-it/issues) if you find any bug or have any suggestion.
